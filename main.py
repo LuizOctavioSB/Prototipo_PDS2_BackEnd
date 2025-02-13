@@ -16,7 +16,7 @@ class Mensagem(BaseModel):
 
 @app.get("/")
 def read_root():
-    return {"Hello": "lalalalalalalalala"}
+    return {"Hello": "lala"}
 
 @app.get("/quadrado/{num}")
 def square(num: int):
