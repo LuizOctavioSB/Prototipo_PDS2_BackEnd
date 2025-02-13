@@ -13,8 +13,8 @@ jobs:
         image: postgres:13
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: admin
-          POSTGRES_DB: nome_database
+          POSTGRES_PASSWORD: 123
+          POSTGRES_DB: prototipo
         ports:
           - 5432:5432
 
@@ -49,6 +49,6 @@ jobs:
 
       - name: Executar testes com pytest
         env:
-          PGPASSWORD: admin  # Adicionando variável de ambiente para autenticação
-          DATABASE_URL: postgresql://postgres:admin@localhost:5432/nome_database
+          PGPASSWORD: 123
+          DATABASE_URL: postgresql://postgres:123@localhost:5432/prototipo
         run: python -m pytest teste.py
