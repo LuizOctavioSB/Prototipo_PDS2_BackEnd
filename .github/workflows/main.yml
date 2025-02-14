@@ -36,7 +36,7 @@ jobs:
       - name: Esperando o PostgreSQL ficar pronto
         run: |
           for i in {1..30}; do
-            if pg_isready -h localhost -p 5432 -U ${{ secrets.DB_USER }}; then
+            if pg_isready -h localhost -p 5432; then
               echo "PostgreSQL está pronto!"
               exit 0
             fi
@@ -46,6 +46,7 @@ jobs:
           echo "PostgreSQL não respondeu a tempo"
           exit 1
         shell: bash
+
 
       - name: Executar testes com pytest
         env:
