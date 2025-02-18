@@ -6,10 +6,10 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 if os.getenv("GITHUB_ACTIONS") is None:
     load_dotenv(".env.local")
 
-user = os.getenv("POSTGRES_USER")
-password = os.getenv("POSTGRES_PASSWORD")
-database = os.getenv("POSTGRES_DB")
-host = os.getenv("POSTGRES_HOST")
+user = "postgres"
+password = "123"
+database = "prototipo"
+host = "localhost"
 
 SQLALCHEMY_DATABASE_URL = f"postgresql://{user}:{password}@{host}/{database}"
 
@@ -26,3 +26,8 @@ def get_db():
         yield db
     finally:
         db.close()
+try:
+    with engine.connect() as conn:
+        print("Conexão bem-sucedida!")
+except Exception as e:
+    print(f"Erro ao conectar ao banco: {e}")

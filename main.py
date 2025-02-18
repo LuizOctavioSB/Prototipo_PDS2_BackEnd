@@ -1,18 +1,22 @@
-from fastapi import FastAPI, status, Depends
-import classes
-import model
-from database import engine, get_db
+from fastapi import FastAPI
+from fastapi.params import Body
+from fastapi import Depends
+from fastapi import status
 from typing import List
 from sqlalchemy.orm import Session
+from database import get_db
+from model import Base
+from database import engine
+import model
 from fastapi.middleware.cors import CORSMiddleware
-# from scraping import scraping_ufu
+import classes
 
 model.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
 origins = [
- 'http://localhost:3000'
+    'http://localhost:3000'
 ]
 app.add_middleware(
     CORSMiddleware,

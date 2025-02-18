@@ -38,5 +38,5 @@ jobs:
 
       - name: Executar pytest
         env:
-          DATABASE_URL: postgresql://postgres:admin@localhost:5432/prototipo
+          DATABASE_URL: postgresql://postgres:123@postgres:5432/prototipo
         run: pytest teste.py
