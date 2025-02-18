@@ -21,35 +21,17 @@ jobs:
     steps:
       - name: pulling git repo
         uses: actions/checkout@v2
-
       - name: instalando o python
         uses: actions/setup-python@v2
         with:
           python-version: "3.13.2"
-
       - name: update pip
         run: python -m pip install --upgrade pip
-
       - name: instalar dependencias
         run: pip install -r requirements.txt
-
-      - name: Verificando variáveis de ambiente
-        run: |
-          echo "POSTGRES_USER = ${{ secrets.POSTGRES_USER }}"
-          echo "POSTGRES_PASSWORD = ${{ secrets.POSTGRES_PASSWORD }}"
-          echo "POSTGRES_DB = ${{ secrets.POSTGRES_DB }}"
-          echo "DATABASE_URL = ${{ secrets.DATABASE_URL }}"
-
-      - name: Verificando status do PostgreSQL
-        run: docker ps -a
-
-      - name: Esperando o PostgreSQL subir completamente
-        run: sleep 30
-
+      - name: Esperando o PostgreSQL ficar pronto
+        run: sleep 15
       - name: Executar pytest
         env:
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-          POSTGRES_HOST: postgres
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: pytest teste.py
