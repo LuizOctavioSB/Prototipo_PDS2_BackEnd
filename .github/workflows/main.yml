@@ -5,7 +5,7 @@ on:
   - pull_request
 
 jobs:
-  test_backend:
+  job1:
     runs-on: ubuntu-latest
 
     services:
@@ -19,39 +19,24 @@ jobs:
           - 5432:5432
 
     steps:
-      - name: Clonando repositório
+      - name: pulling git repo
         uses: actions/checkout@v2
 
-      - name: Instalando Python
+      - name: instalando o python
         uses: actions/setup-python@v2
         with:
           python-version: "3.13"
 
-      - name: Atualizando pip
+      - name: update pip
         run: python -m pip install --upgrade pip
 
-      - name: Instalando dependências
-        run: pip install --no-cache-dir -r requirements.txt
+      - name: instalar dependencias
+        run: pip install -r requirements.txt
 
-      - name: Verificando status do PostgreSQL
-        run: docker ps -a
+      - name: Esperando o PostgreSQL ficar pronto
+        run: sleep 15
 
-      - name: Esperando o PostgreSQL subir completamente
-        run: |
-          sleep 10
-          for i in {1..60}; do
-            pg_isready -h localhost -p 5432 && exit 0
-            echo "Aguardando PostgreSQL..."
-            sleep 2
-          done
-          echo "PostgreSQL não ficou pronto a tempo!"
-          exit 1
-
-      - name: Testando conexão com PostgreSQL
-        run: |
-          PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }} psql -h localhost -U ${{ secrets.POSTGRES_USER }} -d ${{ secrets.POSTGRES_DB }} -c "SELECT 1;"
-
-      - name: Executando pytest
+      - name: Executar pytest
         env:
-          DATABASE_URL: postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/${{ secrets.POSTGRES_DB }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: pytest teste.py
