@@ -13,8 +13,8 @@ jobs:
         image: postgres:13
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_PASSWORD: 123
+          POSTGRES_DB: prototipo
           POSTGRES_HOST: postgres
         ports:
           - 5432:5432
