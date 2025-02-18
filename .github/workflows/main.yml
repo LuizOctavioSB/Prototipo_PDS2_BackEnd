@@ -22,7 +22,7 @@ jobs:
       - name: instalando o python
         uses: actions/setup-python@v2
         with:
-          python-version: "3.11.9"
+          python-version: "3.13.2"
       - name: update pip
         run: python -m pip install --upgrade pip
       - name: instalar dependencias
