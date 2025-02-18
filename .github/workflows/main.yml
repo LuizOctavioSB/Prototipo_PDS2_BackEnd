@@ -33,19 +33,25 @@ jobs:
       - name: Instalando dependências
         run: pip install --no-cache-dir -r requirements.txt
 
-      - name: Esperando o PostgreSQL ficar pronto
+      - name: Verificando status do PostgreSQL
+        run: docker ps -a
+
+      - name: Esperando o PostgreSQL subir completamente
         run: |
-          for i in {1..30}; do
-            pg_isready -h postgres -p 5432 && exit 0
+          sleep 10
+          for i in {1..60}; do
+            pg_isready -h localhost -p 5432 && exit 0
+            echo "Aguardando PostgreSQL..."
             sleep 2
           done
+          echo "PostgreSQL não ficou pronto a tempo!"
           exit 1
 
       - name: Testando conexão com PostgreSQL
         run: |
-          PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }} psql -h postgres -U ${{ secrets.POSTGRES_USER }} -d ${{ secrets.POSTGRES_DB }} -c "SELECT 1;"
+          PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }} psql -h localhost -U ${{ secrets.POSTGRES_USER }} -d ${{ secrets.POSTGRES_DB }} -c "SELECT 1;"
 
       - name: Executando pytest
         env:
-          DATABASE_URL: postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@postgres:5432/${{ secrets.POSTGRES_DB }}
+          DATABASE_URL: postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/${{ secrets.POSTGRES_DB }}
         run: pytest teste.py
