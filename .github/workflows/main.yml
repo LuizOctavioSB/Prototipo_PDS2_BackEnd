@@ -19,27 +19,24 @@ jobs:
           - 5432:5432
 
     steps:
-      - name: pulling git repo
+      - name: Clonar repositório
         uses: actions/checkout@v2
-      - name: instalando o python
+
+      - name: Instalar Python
         uses: actions/setup-python@v2
         with:
           python-version: "3.13.2"
-      - name: update pip
+
+      - name: Atualizar pip
         run: python -m pip install --upgrade pip
-      - name: instalar dependencias
+
+      - name: Instalar dependências
         run: pip install -r requirements.txt
-      - name: Esperando o PostgreSQL ficar pronto
-        run: |
-          for i in {1..30}; do
-            if nc -z postgres 5432; then
-              echo "PostgreSQL is up!"
-              break
-            fi
-            echo "Waiting for PostgreSQL..."
-            sleep 5
-          done
+
+      - name: Esperar o PostgreSQL ficar pronto
+        run: sleep 15
+
       - name: Executar pytest
         env:
-          DATABASE_URL: postgresql://postgres:123@postgres:5432/prototipo
+          DATABASE_URL: postgresql://postgres:admin@localhost:5432/prototipo
         run: pytest teste.py
