@@ -44,9 +44,12 @@ jobs:
         run: docker ps -a
 
       - name: Esperando o PostgreSQL subir completamente
-        run: sleep 15
+        run: sleep 30
 
       - name: Executar pytest
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_HOST: postgres
         run: pytest teste.py
