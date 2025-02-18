@@ -33,5 +33,5 @@ jobs:
         run: sleep 15
       - name: Executar pytest
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: postgresql://postgres:123@localhost:5432/prototipo
         run: pytest teste.py
