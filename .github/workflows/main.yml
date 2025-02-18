@@ -15,7 +15,6 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: 123
           POSTGRES_DB: prototipo
-          POSTGRES_HOST: localhost
         ports:
           - 5432:5432
 
@@ -31,8 +30,16 @@ jobs:
       - name: instalar dependencias
         run: pip install -r requirements.txt
       - name: Esperando o PostgreSQL ficar pronto
-        run: sleep 15
+        run: |
+          for i in {1..30}; do
+            if nc -z postgres 5432; then
+              echo "PostgreSQL is up!"
+              break
+            fi
+            echo "Waiting for PostgreSQL..."
+            sleep 5
+          done
       - name: Executar pytest
         env:
-          DATABASE_URL: postgresql://postgres:123@localhost:5432/prototipo
+          DATABASE_URL: postgresql://postgres:123@postgres:5432/prototipo
         run: pytest teste.py
