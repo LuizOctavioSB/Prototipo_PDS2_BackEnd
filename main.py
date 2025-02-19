@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from database import get_db
 from model import Base
 from database import engine
+from scraping import scraping_ufu
 import model
 from fastapi.middleware.cors import CORSMiddleware
 import classes
@@ -49,11 +50,6 @@ async def buscar_valores(db: Session = Depends(get_db), skip: int = 0, limit: in
     mensagens = db.query(model.Model_Mensagem).offset(skip).limit(limit).all()
     return mensagens
 
-# @app.get("/scraping", status_code=201)
-# def executar_scrape(db: Session = Depends(get_db)):
-#     return scraping_ufu(db)
-
-# @app.get("/menus", response_model=List[classes.MenuNav])
-# def buscar_menus(db: Session = Depends(get_db)):
-#     menus = db.query(model.Model_MenuNav).all()
-#     return menus
+@app.get("/scraping", status_code=status.HTTP_201_CREATED)
+def executar_scrape(db: Session = Depends(get_db)):
+    return scraping_ufu(db)
