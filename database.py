@@ -13,7 +13,6 @@ host = "localhost"
 
 SQLALCHEMY_DATABASE_URL = f"postgresql://{user}:{password}@{host}/{database}"
 
-# Log para verificar a URL de conexão
 print(f"Database URL: {SQLALCHEMY_DATABASE_URL}")
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
